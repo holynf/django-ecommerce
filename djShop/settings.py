@@ -18,7 +18,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'store.apps.StoreConfig'
+    'store.apps.StoreConfig',
+    'basket.apps.BasketConfig'
 ]
 
 REST_FRAMEWORK = {
