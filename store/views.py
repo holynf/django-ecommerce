@@ -4,7 +4,7 @@ from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
 
 class ProductList(generics.ListAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.products.all()   
     serializer_class = ProductSerializer
 
 class CategoryList(generics.ListAPIView):
