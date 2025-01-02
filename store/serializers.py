@@ -7,6 +7,9 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProductSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+
     class Meta:
         model = Product
         fields = '__all__'
+        extra_kwargs = {'created_by': {'write_only': True}}

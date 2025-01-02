@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from .models import Basket, BasketItem
+from store.serializers import ProductSerializer
 
 class BasketItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+
     class Meta:
         model = BasketItem
         fields = ['id', 'product', 'quantity', 'total_price']
