@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'store.apps.StoreConfig',
-    'basket.apps.BasketConfig'
+    'basket.apps.BasketConfig',
+    'orders.apps.OrdersConfig',
 ]
 
 REST_FRAMEWORK = {
