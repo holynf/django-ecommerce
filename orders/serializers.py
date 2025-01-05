@@ -50,3 +50,15 @@ class OrderSerializer(serializers.ModelSerializer):
                 OrderItem.objects.create(order=instance, **item_data)
 
         return instance
+    
+class CreateOrderSerializer(serializers.Serializer):
+    order_key = serializers.CharField(max_length=255)
+    full_name = serializers.CharField(max_length=255)
+    address1 = serializers.CharField(max_length=255)
+    address2 = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    items = OrderItemSerializer(many=True)
+
+    def validate_items(self, value):
+        if not value:
+            raise serializers.ValidationError("Order must contain at least one item.")
+        return value

@@ -104,3 +104,5 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 
 MEDIA_URL = '/media/'
+
+BASKET_SESSION_ID = 'basket'
