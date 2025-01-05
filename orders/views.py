@@ -35,7 +35,6 @@ class AddOrderView(APIView):
     def post(self, request):
         serializer = CreateOrderSerializer(data=request.data)
 
-        # Validate incoming data
         if serializer.is_valid():
             data = serializer.validated_data
 
@@ -51,7 +50,6 @@ class AddOrderView(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            # Create the order
             user_id = request.user.id
             basket = Basket(request)
             basket_total = basket.get_total_price()
@@ -65,11 +63,10 @@ class AddOrderView(APIView):
                 order_key=order_key
             )
 
-            # Create order items
             for item in items:
                 OrderItem.objects.create(
                     order=order,
-                    product_id=item['product'],
+                    product=item['product'],
                     price=item['price'],
                     quantity=item['quantity']
                 )
