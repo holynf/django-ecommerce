@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'basket.apps.BasketConfig',
     'orders.apps.OrdersConfig',
+    'wishlist.apps.WishlistConfig',
 ]
 
 REST_FRAMEWORK = {

@@ -14,7 +14,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'full_name', 'address1', 'address2', 'city', 'phone', 'post_code', 'created', 'updated', 'total_paid', 'order_key', 'billing_status', 'items']
+        fields = ['id', 'user', 'full_name', 'address1', 'address2', 'city', 'phone', 'post_code', 'created', 'updated', 'total_paid', 'order_key', 'order_status', 'items']
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
@@ -34,7 +34,7 @@ class OrderSerializer(serializers.ModelSerializer):
         instance.post_code = validated_data.get('post_code', instance.post_code)
         instance.total_paid = validated_data.get('total_paid', instance.total_paid)
         instance.order_key = validated_data.get('order_key', instance.order_key)
-        instance.billing_status = validated_data.get('billing_status', instance.billing_status)
+        instance.order_status = validated_data.get('order_status', instance.order_status)
         instance.save()
 
         # Update order items

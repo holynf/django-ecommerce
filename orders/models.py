@@ -23,7 +23,6 @@ class Order(models.Model):
     updated = models.DateTimeField(auto_now=True)
     total_paid = models.DecimalField(max_digits=5, decimal_places=2)
     order_key = models.CharField(max_length=200, unique=True)
-    billing_status = models.BooleanField(default=False)
     order_status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='pending')
 
     class Meta:
