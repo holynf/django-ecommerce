@@ -47,3 +47,13 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Comment(models.Model):
+    product = models.ForeignKey(Product, related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_published = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'Comment by {self.user.username} on {self.product.slug}'

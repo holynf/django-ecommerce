@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Product
+from .models import Category, Product, Comment
 
 
 @admin.register(Category)
@@ -16,3 +16,13 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['in_stock', 'is_active']
     list_editable = ['price', 'in_stock']
     prepopulated_fields = {'slug': ('title',)}
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'product', 'user', 'text', 'created_at', 'is_published')
+    list_filter = ('is_published', 'product')
+    search_fields = ('text', 'user__username')
+    ordering = ('-created_at',)
+
+    def get_queryset(self, request):
+        return super().get_queryset(request)
