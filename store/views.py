@@ -3,6 +3,10 @@ from rest_framework import generics, permissions,viewsets
 from .models import Category, Product, Comment
 from .serializers import CategorySerializer, ProductSerializer, CommentSerializer
 from rest_framework.permissions import IsAdminUser
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 class ProductList(generics.ListAPIView):
     queryset = Product.products.all()   
@@ -39,3 +43,30 @@ class AdminCommentViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         serializer.save()
+
+class ProductCommentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, slug):
+        try:
+            product = Product.objects.get(slug=slug)
+        except Product.DoesNotExist:
+            return Response({"error": "Product not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(product=product, user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, product_id, comment_id):
+        try:
+            comment = Comment.objects.get(id=comment_id, product_id=product_id)
+        except Comment.DoesNotExist:
+            return Response({"error": "Comment not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        if comment.user != request.user:
+            return Response({"error": "You do not have permission to delete this comment."}, status=status.HTTP_403_FORBIDDEN)
+
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

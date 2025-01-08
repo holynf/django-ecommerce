@@ -21,6 +21,9 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'text', 'created_at']
         read_only_fields = ['user', 'created_at']
 
+    def create(self, validated_data):
+        return Comment.objects.create(**validated_data)
+
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     comments = CommentSerializer(read_only=True, many=True)
