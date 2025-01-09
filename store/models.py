@@ -35,6 +35,7 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
     objects = models.Manager()
     products = ProductManager()
 
@@ -44,6 +45,16 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('store:product_detail', args=[self.slug])
+    
+    def update_average_rating(self):
+        comments = self.comments.all()
+        if comments.exists():
+            total_rating = sum(comment.rating for comment in comments)
+            average = total_rating / comments.count()
+            self.average_rating = round(average, 2)
+        else:
+            self.average_rating = 0.00
+        self.save()
 
     def __str__(self):
         return self.title
@@ -61,6 +72,15 @@ class Comment(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     is_published = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.product.update_average_rating()
+
+    def delete(self, *args, **kwargs):
+        product = self.product
+        super().delete(*args, **kwargs)
+        product.update_average_rating()
 
     def __str__(self):
         return f'Comment by {self.user.username} on {self.product.slug}'
