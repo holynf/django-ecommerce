@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Product, Comment
+from .models import Category, Product, Comment, Discount
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -12,6 +12,11 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
+class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = '__all__'
+        extra_kwargs = {'product': {'write_only': True}}
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
@@ -25,6 +30,7 @@ class CommentSerializer(serializers.ModelSerializer):
         return Comment.objects.create(**validated_data)
 
 class ProductSerializer(serializers.ModelSerializer):
+    discounts = DiscountSerializer(many=True, read_only=True)
     category = CategorySerializer(read_only=True)
     comments = CommentSerializer(read_only=True, many=True)
 
@@ -33,5 +39,9 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'created_by': {'write_only': True},
-            'comments': {'read_only': True}
+            'comments': {'read_only': True},
+            'discounts': {'read_only': True}
         }
+
+    def get_discounted_price(self, obj):
+        return obj.get_discounted_price()

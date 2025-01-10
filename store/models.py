@@ -56,6 +56,16 @@ class Product(models.Model):
             self.average_rating = 0.00
         self.save()
 
+    def get_discounted_price(self):
+        active_discounts = self.discounts.filter(is_active=True)
+        price = self.price
+        for discount in active_discounts:
+            if discount.discount_type == 'percentage':
+                price -= price * (discount.value / 100)
+            elif discount.discount_type == 'fixed':
+                price -= discount.value
+        return max(price, 0)
+
     def __str__(self):
         return self.title
     
@@ -84,3 +94,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.user.username} on {self.product.slug}'
+    
+class Discount(models.Model):
+    product = models.ForeignKey(Product, related_name='discounts', on_delete=models.CASCADE)
+    discount_type = models.CharField(max_length=50)
+    value = models.DecimalField(max_digits=10, decimal_places=2)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+
+    def is_active(self):
+        from django.utils import timezone
+        return self.start_date <= timezone.now() <= self.end_date

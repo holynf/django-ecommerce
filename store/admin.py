@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Product, Comment
+from .models import Category, Product, Comment,Discount
 
 
 @admin.register(Category)
@@ -23,6 +23,13 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = ('is_published', 'product')
     search_fields = ('text', 'user__username')
     ordering = ('-created_at',)
+
+    def get_queryset(self, request):
+        return super().get_queryset(request)
+
+@admin.register(Discount)
+class DiscountAdmin(admin.ModelAdmin):
+    list_display = ('id', 'product')
 
     def get_queryset(self, request):
         return super().get_queryset(request)
