@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Avg
 
 class ProductManager(models.Manager):
     def get_queryset(self):
@@ -47,17 +48,12 @@ class Product(models.Model):
         return reverse('store:product_detail', args=[self.slug])
     
     def update_average_rating(self):
-        comments = self.comments.all()
-        if comments.exists():
-            total_rating = sum(comment.rating for comment in comments)
-            average = total_rating / comments.count()
-            self.average_rating = round(average, 2)
-        else:
-            self.average_rating = 0.00
+        average_rating = self.comments.all().aggregate(average=Avg('rating',default=0))
+        self.average_rating = round(average_rating['average'], 2)
         self.save()
 
     def get_discounted_price(self):
-        active_discounts = self.discounts.filter(is_active=True)
+        active_discounts = self.discounts.all()
         price = self.price
         for discount in active_discounts:
             if discount.discount_type == 'percentage':

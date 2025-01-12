@@ -33,6 +33,7 @@ class ProductSerializer(serializers.ModelSerializer):
     discounts = DiscountSerializer(many=True, read_only=True)
     category = CategorySerializer(read_only=True)
     comments = CommentSerializer(read_only=True, many=True)
+    discounted_price = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Product
