@@ -32,7 +32,6 @@ class CommentSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     discounts = DiscountSerializer(many=True, read_only=True)
     category = CategorySerializer(read_only=True)
-    comments = CommentSerializer(read_only=True, many=True)
     discounted_price = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -40,7 +39,6 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'created_by': {'write_only': True},
-            'comments': {'read_only': True},
             'discounts': {'read_only': True}
         }
 

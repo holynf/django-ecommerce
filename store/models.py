@@ -54,7 +54,11 @@ class Product(models.Model):
 
     def get_discounted_price(self):
         active_discounts = self.discounts.all()
+        if not active_discounts:
+            return None
+        
         price = self.price
+        
         for discount in active_discounts:
             if discount.discount_type == 'percentage':
                 price -= price * (discount.value / 100)
