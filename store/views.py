@@ -47,7 +47,19 @@ class AdminCommentViewSet(viewsets.ModelViewSet):
 class ProductCommentView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def get(self, request, slug):
+        try:
+            product = Product.objects.get(slug=slug)
+        except Product.DoesNotExist:
+            return Response({"error": "Product not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        comments = Comment.objects.filter(product=product)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+
     def post(self, request, slug):
+        
         try:
             product = Product.objects.get(slug=slug)
         except Product.DoesNotExist:
