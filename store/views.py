@@ -7,14 +7,27 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-
-class ProductList(generics.ListAPIView):
-    queryset = Product.products.all()
-    serializer_class = ProductSerializer
+from django.db.models import Q
 
 class CategoryList(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+class ProductList(generics.ListAPIView):
+    queryset = Product.products.all()
+    serializer_class = ProductSerializer
+    
+class ProductSearchView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        search_term = self.request.query_params.get('search', None)
+        if search_term:
+            queryset = queryset.filter(
+                Q(title__icontains=search_term) | Q(description__icontains=search_term) | Q(category__name__icontains=search_term)
+            )
+        return queryset
 
 class ProductDetail(generics.RetrieveAPIView):
     queryset = Product.objects.filter(in_stock=True)
