@@ -5,13 +5,13 @@ from .models import Category, Product, Comment,Discount
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug']
+    list_display = ['id','name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['title', 'author', 'slug', 'price',
+    list_display = ["id",'title', 'author', 'slug', 'price',
                     'in_stock', 'created', 'updated']
     list_filter = ['in_stock', 'is_active']
     list_editable = ['price', 'in_stock']
