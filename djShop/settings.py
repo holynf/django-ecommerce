@@ -23,7 +23,10 @@ INSTALLED_APPS = [
     'basket.apps.BasketConfig',
     'orders.apps.OrdersConfig',
     'wishlist.apps.WishlistConfig',
+    'accounts.apps.AccountsConfig'
 ]
+
+AUTH_USER_MODEL = "accounts.User"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
