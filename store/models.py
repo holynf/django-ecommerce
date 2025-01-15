@@ -37,7 +37,6 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
-    objects = models.Manager()
     products = ProductManager()
 
     class Meta:
