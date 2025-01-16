@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'basket.apps.BasketConfig',
     'orders.apps.OrdersConfig',
     'wishlist.apps.WishlistConfig',
-    'accounts.apps.AccountsConfig'
+    'accounts'
 ]
 
 AUTH_USER_MODEL = "accounts.User"

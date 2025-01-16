@@ -1,8 +1,9 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Avg
+from django.conf import settings
+
 
 class ProductManager(models.Manager):
     def get_queryset(self):
@@ -25,7 +26,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='product_creator')
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='product_creator')
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255, default='admin')
     description = models.TextField(blank=True)
@@ -38,6 +39,8 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True)
     average_rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
     products = ProductManager()
+    objects = models.Manager()
+
 
     class Meta:
         verbose_name_plural = 'Products'
@@ -70,7 +73,7 @@ class Product(models.Model):
     
 class Comment(models.Model):
     product = models.ForeignKey(Product, related_name='comments', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     text = models.TextField()
     rating = models.PositiveIntegerField(
         validators=[
