@@ -1,10 +1,10 @@
-from django.contrib.auth.models import User
+from accounts.models import User
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
-from authentication.serializers import UserProfileSerializer, UpdateUserProfileSerializer
+from authentication.serializers import UserProfileSerializer, UpdateUserProfileSerializer,UserProfileCustomSerializer
 
 
 class CreateUser(APIView):
@@ -19,6 +19,9 @@ class CreateUser(APIView):
         user_data = User(
             username=data["username"],
             email=data["email"],
+            last_name=data['last_name'],
+            first_name=data['first_name'],
+            phone_number=data['phone_number']
         )
 
         user_data.set_password(data["password"])
@@ -32,7 +35,7 @@ class UserProfile(APIView):
 
     def get(self, request):
         user = request.user
-        serializer = UserProfileSerializer(user)
+        serializer = UserProfileCustomSerializer(user)
         return Response(serializer.data)
 
     def patch(self, request):

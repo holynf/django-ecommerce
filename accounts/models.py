@@ -43,7 +43,7 @@ class User(AbstractBaseUser):
     birth_date = models.DateField(null=True, blank=True)
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=50, unique=True)
-    phone_number = models.CharField(max_length=12, unique=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
 
     # Required fields
     date_joined = models.DateTimeField(auto_now_add=True)

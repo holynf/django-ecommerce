@@ -1,10 +1,10 @@
 from django.db import models
-from django.conf import settings
+from accounts.models import User
 from store.models import Product
 from uuid import uuid4
 
 class Basket(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     session_id = models.UUIDField(default=uuid4, unique=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

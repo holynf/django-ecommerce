@@ -1,10 +1,10 @@
 from django.db import models
-from django.conf import settings
+from accounts.models import User 
 from store.models import Product  # Import the Product model
 
 class Wishlist(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.CASCADE,
         related_name='wishlist'
     )

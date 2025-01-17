@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Basket, BasketItem
 from store.serializers import ProductSerializer
+from authentication.serializers import UserProfileSerializer
 
 class BasketItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
@@ -12,6 +13,8 @@ class BasketItemSerializer(serializers.ModelSerializer):
 class BasketSerializer(serializers.ModelSerializer):
     items = BasketItemSerializer(many=True, read_only=True)
     total_price = serializers.ReadOnlyField()
+    user = UserProfileSerializer(read_only=True)
+
 
     class Meta:
         model = Basket

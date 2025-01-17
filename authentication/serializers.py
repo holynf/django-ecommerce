@@ -1,14 +1,21 @@
 from rest_framework.serializers import ModelSerializer
-from django.contrib.auth.models import User
+from accounts.models import User,UserProfile
 from rest_framework import serializers
-
 
 class UserProfileSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password')
+        fields = ('id', 'username', 'email', 'password','first_name','last_name','phone_number')
         extra_kwargs = {'password': {'write_only': True}}
 
+
+class UserProfileCustomSerializer(ModelSerializer):
+    user = UserProfileSerializer(read_only=True)
+
+    class Meta:
+        model= UserProfile
+        fields = "__all__"
+        extra_kwargs = {'password': {'write_only': True} , 'user': {'read_only': True}}
 
 class UpdateUserProfileSerializer(ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
