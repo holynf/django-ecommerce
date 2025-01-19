@@ -8,14 +8,37 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
+import django_filters.rest_framework
 
 class CategoryList(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+class ProductFilter(django_filters.FilterSet):
+    class Meta:
+        model = Product
+        fields = {
+            'category': ['exact'],
+            'price': ['lt', 'gt', 'exact'],
+            'average_rating': ['lt', 'gt', 'exact'],
+            'in_stock': ['exact'],
+            'is_active': ['exact'],
+        }
+
 class ProductList(generics.ListAPIView):
-    queryset = Product.products.all()
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+    ordering_fields = ['price', 'average_rating', 'created']
+    ordering = ['-created']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        ordering = self.request.query_params.get('ordering', None)
+        if ordering:
+            queryset = queryset.order_by(ordering)
+        return queryset
+
     
 class ProductSearchView(generics.ListAPIView):
     serializer_class = ProductSerializer
