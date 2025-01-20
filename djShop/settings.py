@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'basket.apps.BasketConfig',
     'orders.apps.OrdersConfig',
     'wishlist.apps.WishlistConfig',
+    'blog.apps.BlogConfig',
     'accounts'
 ]
 
