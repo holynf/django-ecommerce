@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Category, Product, Comment, Discount
-from django.contrib.auth.models import User
+from accounts.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
