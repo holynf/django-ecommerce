@@ -5,12 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include("authentication.urls")),
-    path('store/', include("store.urls")),
-    path('basket/', include("basket.urls")),
-    path('orders/', include("orders.urls")),
-    path('wishlist/', include("wishlist.urls")),
-    path('blogs/', include("blog.urls")),
+    path('api/v1/', include("api.urls")),
 ]
 
 if settings.DEBUG:
