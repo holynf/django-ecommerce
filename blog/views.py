@@ -12,9 +12,9 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = PostSerializer(queryset, many=True)
         return Response(serializer.data)
     
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, slug=None):
         queryset = Post.objects.all()
-        post = get_object_or_404(queryset, pk=pk)
+        post = get_object_or_404(queryset, slug=slug)
         serializer = PostSerializer(post)
         return Response(serializer.data)
     

@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
@@ -15,6 +17,10 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField("Category", related_name="posts")
+    slug = models.SlugField(max_length=255,unique=True)
+
+    def get_absolute_url(self):
+        return reverse('blog:post_detail', args=[self.slug])
 
     def get_comments(self):
         return self.comments.all()
