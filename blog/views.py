@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from .models import Post
-from .serializers import PostSerializer,PostCommentListSerializer
+from .serializers import PostSerializer,PostCommentSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
@@ -22,5 +22,5 @@ class PostViewSet(viewsets.ModelViewSet):
     def comments(self, request, pk=None):
         post = get_object_or_404(Post, pk=pk)
         comments = post.get_comments()
-        serializer = PostCommentListSerializer(comments, many=True)
+        serializer = PostCommentSerializer(comments, many=True)
         return Response(serializer.data)

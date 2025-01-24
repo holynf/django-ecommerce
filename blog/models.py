@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from accounts.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
@@ -29,10 +29,10 @@ class Post(models.Model):
         return self.title
 
 class Comment(models.Model):
-    author = models.CharField(max_length=60)
+    user = models.ForeignKey(User,related_name="post_comment_user", on_delete=models.CASCADE)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey("Post", related_name="comments", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.author} on '{self.post}'"
+        return f"{self.user} on '{self.post}'"

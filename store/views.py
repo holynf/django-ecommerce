@@ -89,7 +89,7 @@ class ProductCommentView(APIView):
         except Product.DoesNotExist:
             return Response({"error": "Product not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        comments = Comment.objects.filter(product=product)
+        comments = Comment.objects.filter(product=product, is_published=True)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         

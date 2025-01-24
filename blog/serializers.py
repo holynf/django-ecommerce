@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Category , Comment , Post
+from authentication.serializers import UserProfileSerializer
 
 class PostCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,6 +18,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 class PostCommentSerializer(serializers.ModelSerializer):
     post = PostSerializer(read_only=True)
+    user = UserProfileSerializer(read_only=True)
     
     class Meta:
         model = Comment
