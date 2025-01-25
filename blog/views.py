@@ -19,8 +19,8 @@ class PostViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
     
     @action(detail=True, methods=['get'])
-    def comments(self, request, pk=None):
-        post = get_object_or_404(Post, pk=pk)
+    def comments(self, request, slug=None):
+        post = get_object_or_404(Post, slug=slug)
         comments = post.get_comments()
         serializer = PostCommentSerializer(comments, many=True)
         return Response(serializer.data)
