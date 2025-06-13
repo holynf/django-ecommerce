@@ -17,7 +17,6 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class PostCommentSerializer(serializers.ModelSerializer):
-    post = PostSerializer(read_only=True)
     user = UserProfileSerializer(read_only=True)
     
     class Meta:
