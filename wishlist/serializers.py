@@ -5,7 +5,7 @@ from store.models import Product
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'title', 'price', 'image', 'slug']
+        fields = ['id', 'title', 'price', 'image', 'slug','in_stock']
 
 class WishlistSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)

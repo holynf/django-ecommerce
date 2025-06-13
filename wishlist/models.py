@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import User 
-from store.models import Product  # Import the Product model
+from store.models import Product
 
 class Wishlist(models.Model):
     user = models.OneToOneField(
